@@ -1,67 +1,44 @@
-# Задача 4.1. Ролі та права доступу (бітові маски)
+numbers = [12, 5, 8, 20, 3, 15]
 
-READ = 1      # 0001
-WRITE = 2     # 0010
-DELETE = 4    # 0100
-ADMIN = 8     # 1000
+if not numbers:
+    print("Список порожній")
+else:
+    minimum = numbers[0]
+    maximum = numbers[0]
+    total_sum = 0
+    count = 0
 
-# Ролі
-GUEST = READ
-EDITOR = READ | WRITE
-FULL_ADMIN = READ | WRITE | DELETE | ADMIN
+    for num in numbers:
+        total_sum = total_sum + num
+        count = count + 1
 
-user = GUEST
-print("Початкові права:", bin(user))
+        if num < minimum:
+            minimum = num
 
-# Додати право
-user = user | WRITE
-print("Додали WRITE:", bin(user))
+        if num > maximum:
+            maximum = num
 
-# Перевірити право
-has_write = (user & WRITE) == WRITE
-has_admin = (user & ADMIN) == ADMIN
-print("Є право WRITE:", has_write)
-print("Є право ADMIN:", has_admin)
+    average = total_sum / count
 
-# Забрати право
-user = user & ~WRITE
-print("Забрали WRITE:", bin(user))
+    print("Кількість елементів:", count)
+    print("Сума:", total_sum)
+    print("Мінімум:", minimum)
+    print("Максимум:", maximum)
+    print("Середнє значення:", average)
 
-# Перемкнути право (якщо було - забере, якщо не було - дасть)
-user = user ^ DELETE
-print("Перемкнули DELETE:", bin(user))
+print("-" * 25)
 
+items = [1, 2, 3, 4, 5, 6]
 
-print("-" * 30)
+left = 0
+right = len(items) - 1
 
+while left < right:
+    temp = items[left]
+    items[left] = items[right]
+    items[right] = temp
 
-# Задача 4.2. Бітовий аналіз числа (без if та циклів)
+    left = left + 1
+    right = right - 1
 
-num = int(input("Введіть ціле число: "))
-
-# 1. Парність (1 - непарне, 0 - парне)
-is_odd = bool(num & 1)
-
-# 2. Знак числа (для 32-бітного числа: 1 - від'ємне, 0 - додатне)
-is_negative = bool((num >> 31) & 1)
-
-# 3. Модуль числа без if
-mask = num >> 31
-abs_num = (num + mask) ^ mask
-
-# 4. Чи є число степенем двійки (наприклад 2, 4, 8, 16...)
-is_pow2 = (num > 0) and ((num & (num - 1)) == 0)
-
-# 5. Молодший встановлений біт (крайня права одиниця)
-lowest_bit = num & -num
-
-# 6. Кількість одиниць у двійковому записі
-ones_count = num.bit_count()
-
-print("Двійковий вигляд:", bin(num))
-print("Непарне:", is_odd)
-print("Від'ємне:", is_negative)
-print("Модуль числа:", abs_num)
-print("Степінь двійки:", is_pow2)
-print("Молодший біт:", lowest_bit)
-print("Кількість одиниць:", ones_count)
+print("Перевернутий список:", items)
