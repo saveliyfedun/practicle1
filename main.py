@@ -1,52 +1,34 @@
-# Задача 6.1. Посимвольний аналіз рядка за ASCII (без методів .is*())
+# Задача 7.1. Таблиця множення з форматованим виведенням та інваріантом циклу
 
-text = input("Введіть рядок: ")
+size = 10
 
-upper_count = 0
-lower_count = 0
-digits_count = 0
-spaces_count = 0
-others_count = 0
-
-for char in text:
-  code = ord(char)
-  if 65 <= code <= 90:  # Великі літери A-Z
-    upper_count += 1
-  elif 97 <= code <= 122:  # Малі літери a-z
-    lower_count += 1
-  elif 48 <= code <= 57:  # Цифри 0-9
-    digits_count += 1
-  elif code == 32:  # Пробіл
-    spaces_count += 1
-  else:  # Інші символи
-    others_count += 1
-
-print("Великих літер:", upper_count)
-print("Малих літер:", lower_count)
-print("Цифр:", digits_count)
-print("Пробілів:", spaces_count)
-print("Інших символів:", others_count)
+for i in range(1, size + 1):
+    # Інваріант циклу: перед кожною новою ітерацією вже виведено (i - 1) рядків таблиці множення
+    for j in range(1, size + 1):
+        print(f"{i * j:4}", end="")
+    print()
 
 
-print("-" * 30)
+print("-" * 40)
 
 
-# Задача 6.2. Перевірка на паліндром без урахування регістру через ASCII
+# Задача 7.2. Обчислення N-го числа Фібоначчі за допомогою циклу while
 
-text = input("Введіть рядок для перевірки на паліндром: ")
-clean_text = ""
+n = int(input("Введіть номер числа Фібоначчі (N >= 0): "))
 
-for char in text:
-  code = ord(char)
-  # Якщо велика літера (A-Z), переводимо в малу (+32 за таблицею ASCII)
-  if 65 <= code <= 90:
-    clean_text += chr(code + 32)
-  # Якщо вже мала літера (a-z) або цифра (0-9) - залишаємо як є
-  elif (97 <= code <= 122) or (48 <= code <= 57):
-    clean_text += char
-
-# Перевіряємо чи однаковий рядок зліва направо і справа наліво
-if clean_text == clean_text[::-1]:
-  print("Це паліндром")
+if n == 0:
+    print("0-е число Фібоначчі: 0")
+elif n == 1:
+    print("1-е число Фібоначчі: 1")
 else:
-  print("Це не паліндром")
+    a = 0
+    b = 1
+    count = 2
+
+    while count <= n:
+        next_num = a + b
+        a = b
+        b = next_num
+        count += 1
+
+    print(f"{n}-е число Фібоначчі: {b}")
