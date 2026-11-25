@@ -1,34 +1,42 @@
-# Задача 7.1. Таблиця множення з форматованим виведенням та інваріантом циклу
+# Задача 8.1. Аналіз коливань цін на акції за допомогою ковзного вікна
 
-size = 10
+prices = [120, 125, 118, 130, 135, 128, 140, 145]
+k = 3  # розмір вікна (кількість днів)
 
-for i in range(1, size + 1):
-    # Інваріант циклу: перед кожною новою ітерацією вже виведено (i - 1) рядків таблиці множення
-    for j in range(1, size + 1):
-        print(f"{i * j:4}", end="")
-    print()
+# Рахуємо суму першого вікна
+window_sum = sum(prices[:k])
+max_sum = window_sum
+min_sum = window_sum
+
+# Зсуваємо вікно по списку
+for i in range(k, len(prices)):
+    window_sum = window_sum + prices[i] - prices[i - k]
+    if window_sum > max_sum:
+        max_sum = window_sum
+    if window_sum < min_sum:
+        min_sum = window_sum
+
+print("Ціни на акції:", prices)
+print(f"Максимальна середня ціна за {k} дні:", round(max_sum / k, 2))
+print(f"Мінімальна середня ціна за {k} дні:", round(min_sum / k, 2))
 
 
 print("-" * 40)
 
 
-# Задача 7.2. Обчислення N-го числа Фібоначчі за допомогою циклу while
+# Задача 8.2. Оптимізація перевірки енергоспоживання за префіксними сумами
 
-n = int(input("Введіть номер числа Фібоначчі (N >= 0): "))
+energy = [15, 22, 18, 30, 25, 19, 27]  # споживання за кожну годину
 
-if n == 0:
-    print("0-е число Фібоначчі: 0")
-elif n == 1:
-    print("1-е число Фібоначчі: 1")
-else:
-    a = 0
-    b = 1
-    count = 2
+# Будуємо масив префіксних сум
+prefix = [0] * (len(energy) + 1)
+for i in range(len(energy)):
+    prefix[i + 1] = prefix[i] + energy[i]
 
-    while count <= n:
-        next_num = a + b
-        a = b
-        b = next_num
-        count += 1
+# Запити на перевірку споживання за період з години L по годину R (індекси від 0)
+queries = [(0, 2), (1, 4), (3, 6)]
 
-    print(f"{n}-е число Фібоначчі: {b}")
+print("Споживання по годинах:", energy)
+for left, right in queries:
+    period_sum = prefix[right + 1] - prefix[left]
+    print(f"З {left} по {right} годину витрачено: {period_sum} кВт")
