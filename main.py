@@ -1,42 +1,48 @@
-# Задача 8.1. Аналіз коливань цін на акції за допомогою ковзного вікна
-
-prices = [120, 125, 118, 130, 135, 128, 140, 145]
-k = 3  # розмір вікна (кількість днів)
-
-# Рахуємо суму першого вікна
-window_sum = sum(prices[:k])
-max_sum = window_sum
-min_sum = window_sum
-
-# Зсуваємо вікно по списку
-for i in range(k, len(prices)):
-    window_sum = window_sum + prices[i] - prices[i - k]
-    if window_sum > max_sum:
-        max_sum = window_sum
-    if window_sum < min_sum:
-        min_sum = window_sum
-
-print("Ціни на акції:", prices)
-print(f"Максимальна середня ціна за {k} дні:", round(max_sum / k, 2))
-print(f"Мінімальна середня ціна за {k} дні:", round(min_sum / k, 2))
+# Задача 9.1. Декомпозиція системи аналізу студентських оцінок
 
 
-print("-" * 40)
+def get_average(grades):
+  return sum(grades) / len(grades)
 
 
-# Задача 8.2. Оптимізація перевірки енергоспоживання за префіксними сумами
+def get_grade_letter(avg):
+  if avg >= 90:
+    return "A"
+  elif avg >= 75:
+    return "B"
+  elif avg >= 60:
+    return "C"
+  else:
+    return "F"
 
-energy = [15, 22, 18, 30, 25, 19, 27]  # споживання за кожну годину
 
-# Будуємо масив префіксних сум
-prefix = [0] * (len(energy) + 1)
-for i in range(len(energy)):
-    prefix[i + 1] = prefix[i] + energy[i]
+def show_result(name, grades):
+  avg = get_average(grades)
+  letter = get_grade_letter(avg)
+  print(f"{name}: середній бал = {avg:.1f}, оцінка = {letter}")
 
-# Запити на перевірку споживання за період з години L по годину R (індекси від 0)
-queries = [(0, 2), (1, 4), (3, 6)]
 
-print("Споживання по годинах:", energy)
-for left, right in queries:
-    period_sum = prefix[right + 1] - prefix[left]
-    print(f"З {left} по {right} годину витрачено: {period_sum} кВт")
+show_result("Олег", [85, 90, 78])
+show_result("Анна", [95, 92, 98])
+show_result("Максим", [55, 60, 50])
+
+
+print("-" * 30)
+
+
+# Задача 9.2. Валідація та конвертація валют із контрактом (Preconditions)
+
+
+def convert_usd_to_uah(amount, rate):
+  # Контракт (передумови): сума і курс мають бути більші за 0
+  assert amount > 0, "Сума має бути більшою за 0"
+  assert rate > 0, "Курс має бути більшим за 0"
+
+  return round(amount * rate, 2)
+
+
+money = float(input("Введіть суму в доларах: "))
+course = 41.5
+
+result = convert_usd_to_uah(money, course)
+print("Сума в гривнях:", result)
